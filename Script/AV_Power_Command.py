@@ -10,6 +10,16 @@ import functools #for error handling
 #Encoded strings to be sent to the Crestron processors 
 offenc = 'off'.encode()
 onenc = 'on'.encode()
+allOn = False
+allOff = False
+powerSwitchIPs = ['10.247.39.238', '10.247.76.221', '10.247.76.222', '10.247.76.223', '10.247.76.224', '10.247.76.225', '10.247.76.226', '10.247.76.227', '10.247.76.228']
+#print(sys.argv[1])
+if (len(sys.argv) > 1):
+    if sys.argv[1] == "1":
+        allOn = True
+    if sys.argv[1] == "0":
+        allOff = True
+
 
 #Create a notification popup window
 def popupmsg(msg):
@@ -19,6 +29,11 @@ def popupmsg(msg):
     label.pack(side="top", fill="x", pady=10)
     B1 = Button(popup, text="Okay", command = popup.destroy)
     B1.pack()
+
+def resetButtonState(b):
+    if b.config('relief')[-1] == 'sunken':
+        b.config(relief="raised")
+    
 
 #Prevent program from freezing when not on the correct AV LAN network
 def timeout(seconds_before_timeout):
@@ -73,7 +88,7 @@ def verifyConnection():
         print("error")
 
 try:
-    func = timeout(2)(verifyConnection)
+    func = timeout(5)(verifyConnection)
     func()
     connected = True
 except:
@@ -183,20 +198,40 @@ def clickedOff(host):
         print('Device turned off.')
 
 #Turn RPS Node on
-def clickedOnSwitch(host):
+def clickedOnSwitch(host, offbtn, onbtn):
     if connected:
         try:
             requests.get("http://admin:EHFP2020@" + host + "/set.cmd?cmd=setpower+p61=1", auth=('admin', 'EHFP2020'))
+            try:
+                getpwr = timeout(3)(getPowerStatus)(host)
+                if getpwr == 1:
+                    resetButtonState(offbtn)
+                    onbtn.config(relief="sunken")
+                else:
+                    resetButtonState(onbtn)
+                    offbtn.config(relief="sunken")
+            except:
+                pass
         except:
             print("Couldn't connect")
     else:
         popupmsg('You are not connected to the same network as the Matherly devices. Please check your network settings and restart the program.')
 
 #Turn RPS Node off
-def clickedOffSwitch(host):
+def clickedOffSwitch(host, offbtn, onbtn):
     if connected:
         try:
             requests.get("http://admin:EHFP2020@" + host + "/set.cmd?cmd=setpower+p61=0", auth=('admin', 'EHFP2020'))
+            try:
+                getpwr = timeout(3)(getPowerStatus)(host)
+                if getpwr == 1:
+                    resetButtonState(offbtn)
+                    onbtn.config(relief="sunken")
+                else:
+                    resetButtonState(onbtn)
+                    offbtn.config(relief="sunken")
+            except:
+                pass
         except:
             print("Couldn't connect")
     else:
@@ -208,97 +243,143 @@ def checkPowerStatus():
         try:
             getpwr = timeout(3)(getPowerStatus)("10.247.76.221")
             if getpwr == 1:
-                lbl1201.config(text="1")
+                #lbl1201.config(text="1")
+                resetButtonState(btn10)
+                btn9.config(relief="sunken")
             else:
-                lbl1201.config(text="0")
+                #lbl1201.config(text="0")
+                resetButtonState(btn9)
+                btn10.config(relief="sunken")
         except Exception as e:
-            print(e)
+            print("Timeout -- can't connect to 10.247.76.221")
             lbl1201.config(text="CANNOT CONNECT")
  
         try:
             getpwr = timeout(3)(getPowerStatus)("10.247.76.222")
             if getpwr == 1:
-                lbl1202.config(text="1")
+                #lbl1202.config(text="1")
+                resetButtonState(btn12)
+                btn11.config(relief="sunken")
             else:
-                lbl1202.config(text="0")
+                #lbl1202.config(text="0")
+                resetButtonState(btn11)
+                btn12.config(relief="sunken")
         except:
-            print("Timeout -- can't connect")
+            print("Timeout -- can't connect to 10.247.76.222")
             lbl1202.config(text="CANNOT CONNECT")
         
         try:
             getpwr = timeout(3)(getPowerStatus)("10.247.76.223")
             if getpwr == 1:
-                lbl1203.config(text="1")
+                #lbl1203.config(text="1")
+                resetButtonState(btn14)
+                btn13.config(relief="sunken")
             else:
-                lbl1203.config(text="0")
+                #lbl1203.config(text="0")
+                resetButtonState(btn13)
+                btn14.config(relief="sunken")
         except:
-            print("Timeout -- can't connect")
+            print("Timeout -- can't connect to 10.247.76.223")
             lbl1203.config(text="CANNOT CONNECT")
         
         try:
             getpwr = timeout(3)(getPowerStatus)("10.247.76.224")
             if getpwr == 1:
-                lbl1204.config(text="1")
+                #lbl1204.config(text="1")
+                resetButtonState(btn16)
+                btn15.config(relief="sunken")
             else:
-                lbl1204.config(text="0")
+                #lbl1204.config(text="0")
+                resetButtonState(btn15)
+                btn16.config(relief="sunken")
         except:
-            print("Timeout -- can't connect")
+            print("Timeout -- can't connect to 10.247.76.224")
             lbl1204.config(text="CANNOT CONNECT")
          
         try:
             getpwr = timeout(3)(getPowerStatus)("10.247.76.225")
             if getpwr == 1:
-                lbl1205.config(text="1")
+                #lbl1205.config(text="1")
+                resetButtonState(btn18)
+                btn17.config(relief="sunken")
             else:
-                lbl1205.config(text="0")
+                #lbl1205.config(text="0")
+                resetButtonState(btn17)
+                btn18.config(relief="sunken")
         except:
-            print("Timeout -- can't connect")
+            print("Timeout -- can't connect to 10.247.76.225")
             lbl1205.config(text="CANNOT CONNECT")
 
         try:
             getpwr = timeout(3)(getPowerStatus)("10.247.76.226")    
             if getpwr == 1:
-                lbl1206.config(text="1")
+                #lbl1206.config(text="1")
+                resetButtonState(btn20)
+                btn19.config(relief="sunken")
             else:
-                lbl1206.config(text="0")
+                #lbl1206.config(text="0")
+                resetButtonState(btn19)
+                btn20.config(relief="sunken")
         except:
-            print("Timeout -- can't connect")
+            print("Timeout -- can't connect to 10.247.76.226")
             lbl1206.config(text="CANNOT CONNECT")
          
         try:
             getpwr = timeout(3)(getPowerStatus)("10.247.76.227")
             if getpwr == 1:
-                lbl1207.config(text="1")
+                #lbl1207.config(text="1")
+                resetButtonState(btn22)
+                btn21.config(relief="sunken")
             else:
-                lbl1207.config(text="0")
+                #lbl1207.config(text="0")
+                resetButtonState(btn21)
+                btn22.config(relief="sunken")
         except:
-            print("Timeout -- can't connect")
+            print("Timeout -- can't connect to 10.247.76.227")
             lbl1207.config(text="CANNOT CONNECT")
         
         try:
             getpwr = timeout(3)(getPowerStatus)("10.247.76.228")
             if getpwr == 1:
-                lbl1208.config(text="1")
+                #lbl1208.config(text="1")
+                resetButtonState(btn24)
+                btn23.config(relief="sunken")
             else:
-                lbl1208.config(text="0")
+                #lbl1208.config(text="0")
+                resetButtonState(btn23)
+                btn24.config(relief="sunken")
         except:
-            print("Timeout -- can't connect")
+            print("Timeout -- can't connect 10.247.76.228")
             lbl1208.config(text="CANNOT CONNECT")
         
         try:
-            getpwr = timeout(2)(getPowerStatus)("10.247.39.238")
+            getpwr = timeout(3)(getPowerStatus)("10.247.39.238")
             if getpwr == 1:
-                lblH150.config(text="1")
+                #lblH150.config(text="1")
+                resetButtonState(btn26)
+                btn1.config(relief="sunken")
             else:
-                lblH150.config(text="0")
+                #lblH150.config(text="0")
+                resetButtonState(btn25)
+                btnx.config(relief="sunken")
         except:
-            print("Timeout -- can't connect")
+            print("Timeout -- can't connect to 10.247.39.238 (HGH150)")
             lblH150.config(text="CANNOT CONNECT")
 
     else:
         popupmsg('You are not connected to the same network as the Matherly or Hough devices. Please check your network settings and restart the program.')
 
-    
+def turnAllRPSOn(buttons):
+    i = 0
+    for IP in powerSwitchIPs:
+        clickedOnSwitch(IP, buttons[i], buttons[i+1])
+        i += 2
+
+def turnAllRPSOff(buttons):
+    i = 0
+    for IP in powerSwitchIPs:
+        clickedOffSwitch(IP, buttons[i], buttons[i+1])
+        i += 2
 
 #Creat GUI buttons
 btn = Button(window, text="ON", command= lambda: clickedOn('10.247.39.16'))
@@ -307,10 +388,10 @@ btn.grid(column=1, row=0)
 btn2 = Button(window, text="OFF", command= lambda: clickedOff('10.247.39.16'))
 btn2.grid(column=2, row=0)
 
-btn1 = Button(window, text="ON", command= lambda: clickedOnSwitch('10.247.39.23'))
+btn1 = Button(window, text="ON", command= lambda: clickedOnSwitch('10.247.39.238', btnx, btn1))
 btn1.grid(column=1, row=1)
 
-btnx = Button(window, text="OFF", command= lambda: clickedOffSwitch('10.247.39.23'))
+btnx = Button(window, text="OFF", command= lambda: clickedOffSwitch('10.247.39.238', btnx, btn1))
 btnx.grid(column=2, row=1)
 
 btn3 = Button(window, text="ON", command= lambda: clickedOn('10.247.39.28'))
@@ -331,59 +412,65 @@ btn7.grid(column=1, row=4)
 btn8 = Button(window, text="OFF", command= lambda: clickedOff('10.247.39.34'))
 btn8.grid(column=2, row=4)
 
-btn9 = Button(window, text="ON", command= lambda: clickedOnSwitch('10.247.76.221'))
+btn9 = Button(window, text="ON", command= lambda: clickedOnSwitch('10.247.76.221', btn10, btn9))
 btn9.grid(column=1, row=5)
 
-btn10 = Button(window, text="OFF", command= lambda: clickedOffSwitch('10.247.76.221'))
+btn10 = Button(window, text="OFF", command= lambda: clickedOffSwitch('10.247.76.221', btn10, btn9))
 btn10.grid(column=2, row=5)
 
-btn11 = Button(window, text="ON", command= lambda: clickedOnSwitch('10.247.76.222'))
+btn11 = Button(window, text="ON", command= lambda: clickedOnSwitch('10.247.76.222', btn12, btn11))
 btn11.grid(column=1, row=6)
 
-btn12 = Button(window, text="OFF", command= lambda: clickedOffSwitch('10.247.76.222'))
+btn12 = Button(window, text="OFF", command= lambda: clickedOffSwitch('10.247.76.222', btn12, btn11))
 btn12.grid(column=2, row=6)
 
-btn13 = Button(window, text="ON", command= lambda: clickedOnSwitch('10.247.76.223'))
+btn13 = Button(window, text="ON", command= lambda: clickedOnSwitch('10.247.76.223', btn14, btn13))
 btn13.grid(column=1, row=7)
 
-btn14 = Button(window, text="OFF", command= lambda: clickedOffSwitch('10.247.76.223'))
+btn14 = Button(window, text="OFF", command= lambda: clickedOffSwitch('10.247.76.223', btn14, btn13))
 btn14.grid(column=2, row=7)
 
-btn15 = Button(window, text="ON", command= lambda: clickedOnSwitch('10.247.76.224'))
+btn15 = Button(window, text="ON", command= lambda: clickedOnSwitch('10.247.76.224', btn16, btn15))
 btn15.grid(column=1, row=8)
 
-btn16 = Button(window, text="OFF", command= lambda: clickedOffSwitch('10.247.76.224'))
+btn16 = Button(window, text="OFF", command= lambda: clickedOffSwitch('10.247.76.224', btn16, btn15))
 btn16.grid(column=2, row=8)
 
-btn17 = Button(window, text="ON", command= lambda: clickedOnSwitch('10.247.76.225'))
+btn17 = Button(window, text="ON", command= lambda: clickedOnSwitch('10.247.76.225', btn18, btn17))
 btn17.grid(column=1, row=9)
 
-btn18 = Button(window, text="OFF", command= lambda: clickedOffSwitch('10.247.76.225'))
+btn18 = Button(window, text="OFF", command= lambda: clickedOffSwitch('10.247.76.225', btn18, btn17))
 btn18.grid(column=2, row=9)
 
-btn19 = Button(window, text="ON", command= lambda: clickedOnSwitch('10.247.76.226'))
+btn19 = Button(window, text="ON", command= lambda: clickedOnSwitch('10.247.76.226', btn20, btn19))
 btn19.grid(column=1, row=10)
 
-btn20 = Button(window, text="OFF", command= lambda: clickedOffSwitch('10.247.76.226'))
+btn20 = Button(window, text="OFF", command= lambda: clickedOffSwitch('10.247.76.226', btn20, btn19))
 btn20.grid(column=2, row=10)
 
-btn21 = Button(window, text="ON", command= lambda: clickedOnSwitch('10.247.76.227'))
+btn21 = Button(window, text="ON", command= lambda: clickedOnSwitch('10.247.76.227', btn22, btn21))
 btn21.grid(column=1, row=11)
 
-btn22 = Button(window, text="OFF", command= lambda: clickedOffSwitch('10.247.76.227'))
+btn22 = Button(window, text="OFF", command= lambda: clickedOffSwitch('10.247.76.227', btn22, btn21))
 btn22.grid(column=2, row=11)
 
-btn23 = Button(window, text="ON", command= lambda: clickedOnSwitch('10.247.76.228'))
+btn23 = Button(window, text="ON", command= lambda: clickedOnSwitch('10.247.76.228', btn24, btn23))
 btn23.grid(column=1, row=12)
 
-btn24 = Button(window, text="OFF", command= lambda: clickedOffSwitch('10.247.76.228'))
+btn24 = Button(window, text="OFF", command= lambda: clickedOffSwitch('10.247.76.228', btn24, btn23))
 btn24.grid(column=2, row=12)
 
 btn25 = Button(window, text="UPDATE POWER STATUSES", command= checkPowerStatus)
 btn25.grid(column=1, row=13)
 
+MAT120buttons = [btnx, btn1, btn9, btn10, btn11, btn12, btn13, btn14, btn15, btn16, btn17, btn18, btn19, btn20, btn21, btn22, btn23, btn24]
 
-
+if connected:
+    if allOn == True:
+        turnAllRPSOn(MAT120buttons)
+    elif allOff == True:
+        turnAllRPSOff(MAT120buttons)
+    checkPowerStatus()
 window.mainloop()
 
 print('Exiting')
