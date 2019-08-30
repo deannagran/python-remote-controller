@@ -243,11 +243,11 @@ def checkPowerStatus():
         try:
             getpwr = timeout(3)(getPowerStatus)("10.247.76.221")
             if getpwr == 1:
-                #lbl1201.config(text="1")
+                lbl1201.config(text=" ")
                 resetButtonState(btn10)
                 btn9.config(relief="sunken")
             else:
-                #lbl1201.config(text="0")
+                lbl1201.config(text=" ")
                 resetButtonState(btn9)
                 btn10.config(relief="sunken")
         except Exception as e:
@@ -257,11 +257,11 @@ def checkPowerStatus():
         try:
             getpwr = timeout(3)(getPowerStatus)("10.247.76.222")
             if getpwr == 1:
-                #lbl1202.config(text="1")
+                lbl1202.config(text=" ")
                 resetButtonState(btn12)
                 btn11.config(relief="sunken")
             else:
-                #lbl1202.config(text="0")
+                lbl1202.config(text=" ")
                 resetButtonState(btn11)
                 btn12.config(relief="sunken")
         except:
@@ -271,11 +271,11 @@ def checkPowerStatus():
         try:
             getpwr = timeout(3)(getPowerStatus)("10.247.76.223")
             if getpwr == 1:
-                #lbl1203.config(text="1")
+                lbl1203.config(text=" ")
                 resetButtonState(btn14)
                 btn13.config(relief="sunken")
             else:
-                #lbl1203.config(text="0")
+                lbl1203.config(text=" ")
                 resetButtonState(btn13)
                 btn14.config(relief="sunken")
         except:
@@ -285,11 +285,11 @@ def checkPowerStatus():
         try:
             getpwr = timeout(3)(getPowerStatus)("10.247.76.224")
             if getpwr == 1:
-                #lbl1204.config(text="1")
+                lbl1204.config(text=" ")
                 resetButtonState(btn16)
                 btn15.config(relief="sunken")
             else:
-                #lbl1204.config(text="0")
+                lbl1204.config(text=" ")
                 resetButtonState(btn15)
                 btn16.config(relief="sunken")
         except:
@@ -299,11 +299,11 @@ def checkPowerStatus():
         try:
             getpwr = timeout(3)(getPowerStatus)("10.247.76.225")
             if getpwr == 1:
-                #lbl1205.config(text="1")
+                lbl1205.config(text=" ")
                 resetButtonState(btn18)
                 btn17.config(relief="sunken")
             else:
-                #lbl1205.config(text="0")
+                lbl1205.config(text=" ")
                 resetButtonState(btn17)
                 btn18.config(relief="sunken")
         except:
@@ -313,11 +313,11 @@ def checkPowerStatus():
         try:
             getpwr = timeout(3)(getPowerStatus)("10.247.76.226")    
             if getpwr == 1:
-                #lbl1206.config(text="1")
+                lbl1206.config(text=" ")
                 resetButtonState(btn20)
                 btn19.config(relief="sunken")
             else:
-                #lbl1206.config(text="0")
+                lbl1206.config(text=" ")
                 resetButtonState(btn19)
                 btn20.config(relief="sunken")
         except:
@@ -327,11 +327,11 @@ def checkPowerStatus():
         try:
             getpwr = timeout(3)(getPowerStatus)("10.247.76.227")
             if getpwr == 1:
-                #lbl1207.config(text="1")
+                lbl1207.config(text=" ")
                 resetButtonState(btn22)
                 btn21.config(relief="sunken")
             else:
-                #lbl1207.config(text="0")
+                lbl1207.config(text=" ")
                 resetButtonState(btn21)
                 btn22.config(relief="sunken")
         except:
@@ -341,11 +341,11 @@ def checkPowerStatus():
         try:
             getpwr = timeout(3)(getPowerStatus)("10.247.76.228")
             if getpwr == 1:
-                #lbl1208.config(text="1")
+                lbl1208.config(text=" ")
                 resetButtonState(btn24)
                 btn23.config(relief="sunken")
             else:
-                #lbl1208.config(text="0")
+                lbl1208.config(text=" ")
                 resetButtonState(btn23)
                 btn24.config(relief="sunken")
         except:
@@ -355,11 +355,11 @@ def checkPowerStatus():
         try:
             getpwr = timeout(3)(getPowerStatus)("10.247.39.238")
             if getpwr == 1:
-                #lblH150.config(text="1")
+                lblH150.config(text=" ")
                 resetButtonState(btn26)
                 btn1.config(relief="sunken")
             else:
-                #lblH150.config(text="0")
+                lblH150.config(text=" ")
                 resetButtonState(btn25)
                 btnx.config(relief="sunken")
         except:
